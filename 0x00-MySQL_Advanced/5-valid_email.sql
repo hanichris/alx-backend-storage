@@ -1,5 +1,5 @@
 -- Reset attribute `valid_email` only when `email` has been changed.
-DELIMITER $$
+DELIMITER $$ ;
 CREATE
 TRIGGER update_email
 BEFORE UPDATE
