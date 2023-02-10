@@ -1,0 +1,13 @@
+-- Function to safely divide two arguments.
+DELIMITER //
+
+CREATE FUNCTION IF NOT EXISTS SafeDiv (a INT,b INT)
+RETURNS FLOAT
+DETERMINISTIC
+BEGIN
+    IF (b = 0) THEN
+        RETURN 0;
+    ELSE
+        RETURN a / b;
+    ENDIF;
+END//
