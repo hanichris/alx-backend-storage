@@ -2,7 +2,7 @@
 DROP PROCEDURE IF EXISTS ComputeAverageScoreForUser;
 DELIMITER $$
 CREATE
-PROECDURE ComputeAverageScoreForUser (
+PROCEDURE ComputeAverageScoreForUser (
     IN user_id INT
 )
 BEGIN
