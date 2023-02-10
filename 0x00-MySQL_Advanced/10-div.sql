@@ -1,13 +1,12 @@
--- Function to safely divide two arguments.
-DELIMITER //
-
-CREATE FUNCTION IF NOT EXISTS SafeDiv (a INT,b INT)
-RETURNS FLOAT
-DETERMINISTIC
+-- Write a SQL script that creates a function SafeDiv that divides (and returns) the first by the second number or returns 0 if the second number is equal to 0 --
+-- You must create a function --
+DELIMITER $$
+CREATE FUNCTION SafeDiv (a INT, b INT)
+RETURNS FLOAT DETERMINISTIC
 BEGIN
     IF (b = 0) THEN
         RETURN 0;
     ELSE
         RETURN a / b;
-    ENDIF;
-END//
+    END IF;
+END$$
