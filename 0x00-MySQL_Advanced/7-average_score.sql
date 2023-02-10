@@ -1,4 +1,5 @@
 -- Compute students average score
+DROP PROCEDURE IF EXISTS ComputeAverageScoreForUser;
 DELIMITER $$
 CREATE
 PROECDURE ComputeAverageScoreForUser (
