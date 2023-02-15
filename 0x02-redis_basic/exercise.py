@@ -43,7 +43,7 @@ class Cache:
         """Parametrize Cache.get to string."""
         return self.get(key).decode("utf-8")
 
-    def get_int(self, key:str) -> int:
+    def get_int(self, key: str) -> int:
         """Parametrize Cache.get to int."""
         value = self.get_str(key)
         try:
