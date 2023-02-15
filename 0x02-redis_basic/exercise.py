@@ -41,16 +41,13 @@ class Cache:
 
     def get_str(self, key: str) -> str:
         """Parametrize Cache.get to string."""
-        value = self.get(key)
-        if isinstance(value, bytes):
-            return value.decode("utf-8")
-
+        return self._redis.get(key).decode("utf-8")
+        
     def get_int(self, key: str) -> int:
         """Parametrize Cache.get to int."""
-        value = self.get_str(key)
-        if isinstance(value, str):
-            try:
-                value = int(value)
-            except Exception:
-                value = 0
-            return value
+        value = self._redis.get(key)
+        try:
+            value = int(value.decode("uft-8"))
+        except Exception:
+            value = 0
+        return value
