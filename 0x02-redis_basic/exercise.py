@@ -26,7 +26,7 @@ class Cache:
         return key
 
     def get(self, key: str,
-            fn: Optional[Callable] = None) -> Union[str, bytes, int, float]:
+            fn: Optional[Callable] = None) -> Union[bytes, str, int, float]:
         """Retrieve an element from the Redis data structure store.
 
         Args:
@@ -41,13 +41,14 @@ class Cache:
 
     def get_str(self, key: str) -> str:
         """Parametrize Cache.get to string."""
-        return self.get(key).decode("utf-8")
+        value = self.get(key)
+        if isinstance(value, bytes):
+            return value.decode("utf-8")
 
     def get_int(self, key: str) -> int:
         """Parametrize Cache.get to int."""
         value = self.get_str(key)
-        try:
-            value = int(value)
-        except Exception:
-            value = 0
-        return value
+        if isinstance(value, str):
+            return int(value)
+        else:
+            return 0
