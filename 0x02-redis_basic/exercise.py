@@ -49,6 +49,8 @@ class Cache:
         """Parametrize Cache.get to int."""
         value = self.get_str(key)
         if isinstance(value, str):
-            return int(value)
-        else:
-            return 0
+            try:
+                value = int(value)
+            except Exception:
+                value = 0
+            return value
