@@ -6,6 +6,21 @@ import uuid
 from typing import Callable, Optional, Union
 
 
+def call_history(method: Callable) -> Callable:
+    """Store the history of inputs and outputs of a function."""
+    key = method.__qualname__
+    inputs = f"{key}:inputs"
+    outputs = f"{key}:outputs"
+
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """Wrapper function."""
+        self._redis.rpush(inputs, str(args))
+        output = method(self, *args, **kwargs)
+        self._redis.rpush(outputs, str(output))
+        return output
+    return wrapper
+
 def count_calls(method: Callable) -> Callable:
     """Count calls to the methods of class Cache."""
     key = method.__qualname__
@@ -26,6 +41,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @call_history
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Generate a random uuid key and store the data in redis.
