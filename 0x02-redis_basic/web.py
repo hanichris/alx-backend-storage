@@ -15,7 +15,7 @@ def url_visits(func: Callable) -> Callable:
         """Wrapper function"""
         key = f"count:{args[0]}"
         r.incr(key)
-        r.expire(key, 10, nx=True)
+        r.expire(key, 10)
         return func(*args, **kwargs)
     return wrapper
 
