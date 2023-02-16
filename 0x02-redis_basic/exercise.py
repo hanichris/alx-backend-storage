@@ -1,9 +1,21 @@
 #!/usr/bin/env python3
 """Module that explores working with the Redis data structure store."""
+import functools
 import redis
 import uuid
 from typing import Callable, Optional, Union
 
+
+def count_calls(method: Callable) -> Callable:
+    """Count calls to the methods of class Cache."""
+    key = method.__qualname__
+
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """wrapper function."""
+        self._redis.incr(key)
+        return method(self, *args, *kwargs)
+    return wrapper
 
 class Cache:
     """Cache class definition."""
@@ -13,6 +25,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Generate a random uuid key and store the data in redis.
 
