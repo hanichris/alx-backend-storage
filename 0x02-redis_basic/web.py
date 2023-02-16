@@ -20,7 +20,7 @@ def url_visits(func: Callable) -> Callable:
         cached = r.get(f'url')
         if cached:
             return cached.decode("utf-8")
-        r.setex(f'{url}', 10, func(url))
+        r.setex(f'{url}, 10, {func(url)}')
         return func(*args, **kwargs)
     return wrapper
 
