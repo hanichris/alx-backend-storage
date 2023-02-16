@@ -17,6 +17,7 @@ def count_calls(method: Callable) -> Callable:
         return method(self, *args, *kwargs)
     return wrapper
 
+
 class Cache:
     """Cache class definition."""
 
@@ -55,7 +56,7 @@ class Cache:
     def get_str(self, key: str) -> str:
         """Parametrize Cache.get to string."""
         return self._redis.get(key).decode("utf-8")
-        
+
     def get_int(self, key: str) -> int:
         """Parametrize Cache.get to int."""
         value = self._redis.get(key)
