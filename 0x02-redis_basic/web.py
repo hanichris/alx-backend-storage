@@ -29,7 +29,3 @@ if __name__ == "__main__":
     url = "http://slowwly.robertomurray.co.uk"
     get_page(url)
     print(f"no of vists: {r.get(f'count:{url}')}")
-    get_page(url)
-    get_page(url)
-    get_page(url)
-    print(f"no of vists: {r.get(f'count:{url}')}")
