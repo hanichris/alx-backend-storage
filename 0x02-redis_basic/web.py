@@ -1,34 +1,37 @@
 #!/usr/bin/env python3
-"""
-Implements an expiring web cache and tracker
-"""
-from typing import Callable
-from functools import wraps
+"""Implement an expiring web cache and tracker"""
+import functools
 import redis
 import requests
-redis_client = redis.Redis()
+from typing import Callable
 
 
-def url_count(method: Callable) -> Callable:
-    """counts how many times an url is accessed"""
-    @wraps(method)
+r = redis.Redis()
+
+
+def url_visits(func: Callable) -> Callable:
+    """Define a decorator."""
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
+        """Wrapper function"""
         url = args[0]
-        redis_client.incr(f"count:{url}")
-        cached = redis_client.get(f'{url}')
+        key = f"count:{url}"
+        r.incr(key)
+        cached = r.get(f'url')
         if cached:
-            return cached.decode('utf-8')
-        redis_client.setex(f'{url}, 10, {method(url)}')
-        return method(*args, **kwargs)
+            return cached.decode("utf-8")
+        r.setex(f'{url}, 10, {func(url)}')
+        return func(*args, **kwargs)
     return wrapper
 
 
-@url_count
+@url_visits
 def get_page(url: str) -> str:
-    """get a page and cache value"""
-    response = requests.get(url)
-    return response.text
+    """Obtain HTML content of a page and return it."""
+    r = requests.get(url)
+    return r.text
 
 
 if __name__ == "__main__":
-    get_page('http://slowwly.robertomurray.co.uk')
+    url = "http://slowwly.robertomurray.co.uk"
+    get_page(url)
