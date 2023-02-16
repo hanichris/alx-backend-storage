@@ -82,3 +82,19 @@ class Cache:
         except Exception:
             value = 0
         return value
+
+
+def replay(method: Callable) -> None:
+    """Display the history of calls of a particular function."""
+    key = method.__qualname__
+    inputs = f"{key}:inputs"
+    outputs = f"{key}:outputs"
+    _redis = method.__self__._redis
+
+    count = _redis.get(key).decode("utf-8")
+    print(f"{key} was called {count} times:")
+    input_list = _redis.lrange(inputs, 0, -1)
+    output_list = _redis.lrange(outputs, 0, -1)
+    for arg, res in zip(input_list, output_list):
+        arg, res = arg.decode("utf-8"), res.decode("utf-8")
+        print(f"{key}(*{arg}) -> {res}")
