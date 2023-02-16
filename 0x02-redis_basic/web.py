@@ -24,11 +24,13 @@ def url_visits(func: Callable) -> Callable:
         return func(*args, **kwargs)
     return wrapper
 
+
 @url_visits
 def get_page(url: str) -> str:
     """Obtain HTML content of a page and return it."""
     r = requests.get(url)
     return r.text
+
 
 if __name__ == "__main__":
     url = "http://slowwly.robertomurray.co.uk"
