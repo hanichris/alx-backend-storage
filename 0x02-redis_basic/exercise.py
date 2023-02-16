@@ -21,6 +21,7 @@ def call_history(method: Callable) -> Callable:
         return output
     return wrapper
 
+
 def count_calls(method: Callable) -> Callable:
     """Count calls to the methods of class Cache."""
     key = method.__qualname__
